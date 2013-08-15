@@ -4,7 +4,7 @@ AVF 1308
 CSS Template
 */
 
-#launchpage{
+#launchpage, #week1, #igapi, #flickr{
 	background: rgb(135,224,253); /* Old browsers */
 	background: -moz-radial-gradient(center, ellipse cover,  rgba(135,224,253,1) 20%, rgba(83,203,241,1) 62%, rgba(5,171,224,1) 100%); /* FF3.6+ */
 	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(20%,rgba(135,224,253,1)), color-stop(62%,rgba(83,203,241,1)), color-stop(100%,rgba(5,171,224,1))); /* Chrome,Safari4+ */
@@ -22,4 +22,17 @@ h1{
 	padding: 5px;
 	margin: 0px;
 	font-size: 18px;
+}
+
+ul#data-output img, ul#fldata-output img{
+	width: 100%;
+}
+
+ul#data-output li, ul#fldata-output li{
+	text-align: center;
+	list-style: none;
+	display: inline-block;
+	padding: 5px;
+	margin: 10px;
+	width: 30%;
 }
