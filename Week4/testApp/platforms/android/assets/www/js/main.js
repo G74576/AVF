@@ -2,15 +2,52 @@
 //AVF 1398
 //JavaScript Template
 
+
+// Mashup Function for Camera and Geolocation
+
+$('#camerapage').on('pageinit', function(){
+	navigator.geolocation.getCurrentPosition(onCamGeoSuccess, onCamGeoFail, {enableHighAccuracy: true});
+});
+
+$('#geolocationPage').on('pageinit', function(){
+	var connMashState = navigator.network.connection.type;
+	var mashState = {};
+		mashState[Connection.UNKNOWN]  	= 'Unknown connection';
+		mashState[Connection.ETHERNET] 	= 'Ethernet connection';
+		mashState[Connection.WIFI]     	= 'WiFi connection';
+		mashState[Connection.CELL_2G]  	= 'Cell 2G connection';
+		status[Connection.CELL_3G]  	= 'Cell 3G connection';
+		mashState[Connection.CELL_4G]  	= 'Cell 4G connection';
+		mashState[Connection.NONE]     	= 'No network connection';
+		
+		if(mashState[connMashState] == 'No network connection'){
+			alert("Please connect to a network to use this feature");
+		}else{
+			alert("Your connection type is: " + mashState[connMashState]);
+			$("#geobtn").bind("tap", geoFn);
+		}
+});
+
+//These functions will not run until device is ready
+
+var onDeviceReady = function(){
+	$('form #searchbtn').bind('tap', instfn);
+	$('form #flsearchbtn').bind('tap', flickfn);
+	$('#camerabtn').bind('tap', cameraFn);
+	//$("#geobtn").bind("tap", geoFn);
+	$("#compassbtn").bind("tap", compFn);
+	$("#connbtn").bind("tap", connFn);
+};
+
 // Instagram API Functions
-$('form #searchbtn').on('click', function(){
+var instfn = function(){
 	$.mobile.changePage("#igapi", {});
 	$('#data-output').empty();
 	var tag = $('#search').val();
 	var url = 'https://api.instagram.com/v1/tags/'+ tag +
 				'/media/recent?callback=?&amp;client_id=be8e93cc3ab4436bbcc58ad345e6e798';
 	$.getJSON(url, results);
-});
+};
 
 
 // Function puts search results into a list -- use css to customize the list
@@ -18,39 +55,30 @@ var results = function(info){
 	console.log(info);
 	
 	$.each(info.data, function(index, photo){
-		var pic = "<li><a href='" + photo.images.standard_resolution.url + "' target='_blank'><img src='" + photo.images.standard_resolution.url +
+		var pic = "<li><a href='" + photo.images.standard_resolution.url + "' target='_bland'><img src='" + photo.images.standard_resolution.url +
 					"'alt='" + photo.user.id + "' /></a></li>";
 		$("#data-output").append(pic);
 	});
 };
 
 // Flickr API Functions
-$('form #flsearchbtn').on('click', function(){
+var flickfn = function(){
 	$.mobile.changePage("#flickr", {});
 	$('#fldata-output').empty();
 	var fltag = $('#flsearch').val();
 	var flurl = "http://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=79682155523ba2d9b864321da105b8fa&tags="
 				 + fltag + "&format=json&jsoncallback=?&per_page=20";
 	$.getJSON(flurl, flresults);
-});
+};
 
 var flresults = function(finfo){
-	console.log(finfo)
+	console.log(finfo);
 	
 	$.each(finfo.photos.photo, function(index, fphoto){
 		var flimage = "http://farm" + fphoto.farm + ".static.flickr.com/" + fphoto.server + "/" + fphoto.id + "_" + fphoto.secret + ".jpg";
 		var flpic = "<li><a href='" + flimage + "' target='_blank'><img src='" + flimage + "'alt='" + fphoto.id + "' /></a></li>";
 		$("#fldata-output").append(flpic);
 	});
-};
-
-//These functions will not run until device is ready
-
-var onDeviceReady = function(){
-	$('#camerabtn').bind('tap', cameraFn);
-	$("#geobtn").on("click", geoFn);
-	$("#compassbtn").on("click", compFn);
-	$("#connbtn").on("click", connFn);
 };
 
 // Camera Function
@@ -86,7 +114,7 @@ var connFn = function(){
 
 var onSuccess = function(imageURI){
 	$("#cameraImage").attr("src", imageURI);
-	$("#cameraImage").css("display", "block");
+	$("#cameraImage").css("display", "inline");
 };
 var onFail = function(message){
 	alert('Failed Because:' + message);
@@ -101,7 +129,7 @@ var onCompFail = function(compassError){
 };
 
 var onGeoSuccess = function(position){
-	alert("Get current location!")
+	alert("Get current location!");
 	var lat = position.coords.latitude;
 	var lon = position.coords.longitude;
 	var map = '<p>' + 'Latitude: ' + lat + '<br/>' + 'Longitude: ' + lon + '</p><br/>' + 
@@ -111,9 +139,26 @@ var onGeoSuccess = function(position){
 	$("#geoMap").append(map);
 };
 
+var onCamGeoSuccess = function(position){
+	alert("Get current location!");
+	var lat = position.coords.latitude;
+	var lon = position.coords.longitude;
+	var map = '<p>' + 'Latitude: ' + lat + '<br/>' + 'Longitude: ' + lon + '</p><br/>' + 
+				'<img class="map" src="http://maps.googleapis.com/maps/api/staticmap?center=' 
+				+ lat + ',' + lon + '&zoom=13&size=600x300&maptype=roadmap&markers=color:red%7Clabel:S%7C' 
+				+ lat + ',' + lon + '&sensor=true" />';
+	$("#geoMapCam").append(map);
+};
+
 var onGeoFail = function(error){
 	if(error == 1){
-		altert("Turn on geolocation services");
+		alert("Turn on geolocation services");
+	}
+};
+
+var onCamGeoFail = function(error){
+	if(error == 1){
+		alert("Turn on geolocation services");
 	}
 };
 

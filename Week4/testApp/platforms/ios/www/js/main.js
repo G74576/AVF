@@ -12,13 +12,13 @@ $('#camerapage').on('pageinit', function(){
 $('#geolocationPage').on('pageinit', function(){
 	var connMashState = navigator.network.connection.type;
 	var mashState = {};
-		mashState[Connection.UNKNOWN]  = 'Unknown connection';
-		mashState[Connection.ETHERNET] = 'Ethernet connection';
-		mashState[Connection.WIFI]     = 'WiFi connection';
-		mashState[Connection.CELL_2G]  = 'Cell 2G connection';
-		status[Connection.CELL_3G]  = 'Cell 3G connection';
-		mashState[Connection.CELL_4G]  = 'Cell 4G connection';
-		mashState[Connection.NONE]     = 'No network connection';
+		mashState[Connection.UNKNOWN]  	= 'Unknown connection';
+		mashState[Connection.ETHERNET] 	= 'Ethernet connection';
+		mashState[Connection.WIFI]     	= 'WiFi connection';
+		mashState[Connection.CELL_2G]  	= 'Cell 2G connection';
+		status[Connection.CELL_3G]  	= 'Cell 3G connection';
+		mashState[Connection.CELL_4G]  	= 'Cell 4G connection';
+		mashState[Connection.NONE]     	= 'No network connection';
 		
 		if(mashState[connMashState] == 'No network connection'){
 			alert("Please connect to a network to use this feature");
@@ -72,7 +72,7 @@ var flickfn = function(){
 };
 
 var flresults = function(finfo){
-	console.log(finfo)
+	console.log(finfo);
 	
 	$.each(finfo.photos.photo, function(index, fphoto){
 		var flimage = "http://farm" + fphoto.farm + ".static.flickr.com/" + fphoto.server + "/" + fphoto.id + "_" + fphoto.secret + ".jpg";
@@ -152,13 +152,13 @@ var onCamGeoSuccess = function(position){
 
 var onGeoFail = function(error){
 	if(error == 1){
-		altert("Turn on geolocation services");
+		alert("Turn on geolocation services");
 	}
 };
 
 var onCamGeoFail = function(error){
 	if(error == 1){
-		altert("Turn on geolocation services");
+		alert("Turn on geolocation services");
 	}
 };
 
